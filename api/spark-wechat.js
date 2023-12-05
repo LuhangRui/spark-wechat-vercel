@@ -12,6 +12,79 @@ let userLastChatTime = {};
 let userStashMsg = {};
 let userHasAnswerIng = {};
 
+const emojiObj = {
+  "/::)": "微笑",
+  "/::~": "伤心",
+  "/::B": "美女",
+  "/::|": "发呆",
+  "/:8-)": "墨镜",
+  "/::<": "哭",
+  "/::$": "羞",
+  "/::X": "哑",
+  "/::Z": "睡",
+  "/::’(": "哭",
+  "/::-|": "囧",
+  "/::@": "怒",
+  "/::P": "调皮",
+  "/::D": "笑",
+  "/::O": "惊讶",
+  "/::(": "难过",
+  "/::+": "酷",
+  "/:–b": "汗",
+  "/::Q": "抓狂",
+  "/::T": "吐",
+  "/:,@P": "笑",
+  "/:,@-D": "快乐",
+  "/::d": "奇",
+  "/:,@o": "傲",
+  "/::g": "饿",
+  "/:|-)": "累",
+  "/::!": "吓",
+  "/::L": "汗",
+  "/::>": "高兴",
+  "/::,@": "闲",
+  "/:,@f": "努力",
+  "/::-S": "骂",
+  "/:?": "疑问",
+  "/:,@x": "秘密",
+  "/:,@@": "乱",
+  "/::8": "疯",
+  "/:,@!": "哀",
+  "/:!!!": "鬼",
+  "/:xx": "打击",
+  "/:bye": "bye",
+  "/:wipe": "汗",
+  "/:dig": "抠",
+  "/:handclap": "鼓掌",
+  "/:&-(": "糟糕",
+  "/:B-)": "恶搞",
+  "/:<@": "什么",
+  "/:@>": "什么",
+  "/::-O": "累",
+  "/:>-|": "看",
+  "/:P-(": "难过",
+  "/::’|": "难过",
+  "/:X-)": "坏",
+  "/::*": "亲",
+  "/:@x": "吓",
+  "/:8*": "可怜",
+  "/:pd": "刀",
+  "/:<W>": "水果",
+  "/:beer": "酒",
+  "/:basketb": "篮球",
+  "/:oo": "乒乓",
+  "/:coffee": "咖啡",
+  "/:eat": "美食",
+  "/:pig": "动物",
+  "/:rose": "鲜花",
+  "/:fade": "枯",
+  "/:showlove": "唇",
+  "/:heart": "爱",
+  "/:break": "分手",
+  "/:cake": "生日",
+  "/:li": "电"
+};
+
 module.exports = async function (request, response) {
   const method = request.method;
   const timestamp = request.query.timestamp;
@@ -44,6 +117,9 @@ module.exports = async function (request, response) {
   let Content;
   if (MsgType === 'text') {
     Content = textMsg.xml.Content[0];
+    if (Object.hasOwnProperty.call(emojiObj, Content)) {
+      Content = '我发送了表情：' + emojiObj[Content] + '，现在你要怎么做'
+    }
   }
 
   const timeNow = Math.floor(Date.now() / 1000);
@@ -85,7 +161,7 @@ module.exports = async function (request, response) {
     ));
     return;
   }
-  console.log("当前时间：",timeNow,"上次时间：",userLastChatTime[FromUserName])
+  console.log("当前时间：", timeNow, "上次时间：", userLastChatTime[FromUserName])
   if (
     userLastChatTime[FromUserName] &&
     timeNow - userLastChatTime[FromUserName] >= 300
@@ -97,7 +173,7 @@ module.exports = async function (request, response) {
     userChatHistory[FromUserName] = [];
   }
   userChatHistory[FromUserName].push({ Role: 'user', Content });
-  console.log("会话历史：",userChatHistory);
+  console.log("会话历史：", userChatHistory);
   const data = genParams(userChatHistory[FromUserName]);
 
   const connect = await getConnect();
@@ -125,7 +201,7 @@ module.exports = async function (request, response) {
         answer += content;
       } else {
         answer += content;
-        console.log('收到最终结果：',answer);
+        console.log('收到最终结果：', answer);
         const usage = payload.usage;
         const temp = usage.text;
         const totalTokens = temp.total_tokens;
