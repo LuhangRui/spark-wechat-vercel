@@ -146,7 +146,7 @@ module.exports = async function (request, response) {
           FromUserName,
           ToUserName,
           timeNow,
-          '欢迎关注，我已经接入了星火认知大模型。快来和我对话吧。'
+          process.env.SUBSCRIBE_REPLY
         ));
         return;
       } else {

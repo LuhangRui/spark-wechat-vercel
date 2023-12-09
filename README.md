@@ -25,6 +25,8 @@ API_KEY=星火apikey
 WX_TOKEN=微信公众号TOKEN
 #这一项是关键词自动回复，是个json串，用于对特定关键词回复不同内容
 KEYWORD_REPLAY={"聊天记录":"https://www.alipan.com/s/XRqvCx7Sur7 点击链接保存，或者复制本段内容，打开「阿里云盘」APP"}
+#此项为关注后的自动回复配置
+SUBSCRIBE_REPLY='欢迎关注，我已经接入了星火认知大模型。快来和我对话吧。'
 ```
 填完之后点击`Deploy`，等待部署完成后，点击`settings`找到`Domain`，把你的域名填上去就好了，会自动加https
 
