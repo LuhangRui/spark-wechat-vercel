@@ -117,6 +117,7 @@ module.exports = async function (request, response) {
   const CreateTime = textMsg.xml.CreateTime[0];
   const MsgType = textMsg.xml.MsgType[0];
   let Content;
+  const timeNow = Math.floor(Date.now() / 1000);
   if (MsgType === 'text') {
     Content = textMsg.xml.Content[0];
     if (Object.hasOwnProperty.call(emojiObj, Content)) {
@@ -134,7 +135,6 @@ module.exports = async function (request, response) {
 
     }
 
-    const timeNow = Math.floor(Date.now() / 1000);
 
     if (MsgType === 'event') {
       const Event = textMsg.xml.Event[0];
