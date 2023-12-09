@@ -84,7 +84,8 @@ const emojiObj = {
   "/:cake": "蛋糕",
   "/:li": "闪电劈你"
 };
-const keywordAutoReply  =  process.env.KEYWORD_REPLAY;
+const keywordAutoReply = process.env.KEYWORD_REPLAY;
+console.log(keywordAutoReply);
 
 module.exports = async function (request, response) {
   const method = request.method;
@@ -122,139 +123,140 @@ module.exports = async function (request, response) {
       //用户发送了微信自带表情
       Content = '我发送了表情：' + emojiObj[Content] + '，现在你要怎么做'
     } else if (Object.hasOwnProperty.call(keywordAutoReply, Content)) {
-        //关键词自动回复
-        response.status(200).send(formatReply(
-          FromUserName,
-          ToUserName,
-          timeNow,
-          keywordAutoReply[Content]
-        ));
-        return;
-
-  }
-
-  const timeNow = Math.floor(Date.now() / 1000);
-
-  if (MsgType === 'event') {
-    const Event = textMsg.xml.Event[0];
-    if (Event === 'subscribe') {
+      //关键词自动回复
       response.status(200).send(formatReply(
         FromUserName,
         ToUserName,
         timeNow,
-        '欢迎关注，我已经接入了星火认知大模型。快来和我对话吧。'
+        keywordAutoReply[Content]
       ));
       return;
-    } else {
-      return response.status(200).send('');
+
     }
-  }
 
-  if (userHasAnswerIng[FromUserName]) {
-    response.status(200).send(formatReply(
-      FromUserName,
-      ToUserName,
-      timeNow,
-      '【还在思考中，回复任意文字尝试获取回复】'
-    ));
-    return;
-  }
+    const timeNow = Math.floor(Date.now() / 1000);
 
-  if (userStashMsg[FromUserName]) {
-    console.log('用户有暂存数据，返回暂存数据');
-    let tmp = userStashMsg[FromUserName];
-    userStashMsg[FromUserName] = '';
-    response.status(200).send(formatReply(
-      FromUserName,
-      ToUserName,
-      timeNow,
-      tmp
-    ));
-    return;
-  }
-  console.log("当前时间：", timeNow, "上次时间：", userLastChatTime[FromUserName])
-  if (
-    userLastChatTime[FromUserName] &&
-    timeNow - userLastChatTime[FromUserName] >= 300
-  ) {
-    userChatHistory[FromUserName] = [];
-  }
-  userLastChatTime[FromUserName] = timeNow;
-  if (!userChatHistory[FromUserName]) {
-    userChatHistory[FromUserName] = [];
-  }
-  userChatHistory[FromUserName].push({ Role: 'user', Content });
-  console.log("会话历史：", userChatHistory);
-  const data = genParams(userChatHistory[FromUserName]);
-
-  const connect = await getConnect();
-  connect.send(JSON.stringify(data));
-
-  let answer = '';
-  let timeout;
-  const done = new Promise((resolve) => {
-    connect.on('message', (msg) => {
-      const data = JSON.parse(msg);
-      const payload = data.payload;
-      const choices = payload.choices;
-      const header = data.header;
-      const code = header.code;
-
-      if (code !== 0) {
-        console.log(payload);
-        return;
-      }
-
-      const status = choices.status;
-      const text = choices.text;
-      const content = text[0].content;
-      if (status !== 2) {
-        answer += content;
-      } else {
-        answer += content;
-        console.log('收到最终结果：', answer);
-        const usage = payload.usage;
-        const temp = usage.text;
-        const totalTokens = temp.total_tokens;
-        console.log('total_tokens:', totalTokens);
-        userHasAnswerIng[FromUserName] = false;
-        userChatHistory[FromUserName].push({
-          Role: 'assistant',
-          Content: answer,
-        });
-        const timeNow2 = Math.floor(Date.now() / 1000);
-        if (timeNow2 - timeNow > 3) {
-          userStashMsg[FromUserName] = answer;
-        }
-        clearTimeout(timeout);
-        resolve();
-      }
-    });
-  });
-
-  const timeoutPromise = new Promise((resolve) => {
-    timeout = setTimeout(() => {
-      userHasAnswerIng[FromUserName] = true;
-      console.log('执行超过3s，提前返回');
-      resolve(
-        formatReply(
+    if (MsgType === 'event') {
+      const Event = textMsg.xml.Event[0];
+      if (Event === 'subscribe') {
+        response.status(200).send(formatReply(
           FromUserName,
           ToUserName,
           timeNow,
-          '【正在思考中，回复任意文字尝试获取回复】'
-        )
-      );
-    }, 3000);
-  });
+          '欢迎关注，我已经接入了星火认知大模型。快来和我对话吧。'
+        ));
+        return;
+      } else {
+        return response.status(200).send('');
+      }
+    }
 
-  const result = await Promise.race([done, timeoutPromise]);
-  if (result) {
-    response.status(200).send(result);
-    return;
+    if (userHasAnswerIng[FromUserName]) {
+      response.status(200).send(formatReply(
+        FromUserName,
+        ToUserName,
+        timeNow,
+        '【还在思考中，回复任意文字尝试获取回复】'
+      ));
+      return;
+    }
+
+    if (userStashMsg[FromUserName]) {
+      console.log('用户有暂存数据，返回暂存数据');
+      let tmp = userStashMsg[FromUserName];
+      userStashMsg[FromUserName] = '';
+      response.status(200).send(formatReply(
+        FromUserName,
+        ToUserName,
+        timeNow,
+        tmp
+      ));
+      return;
+    }
+    console.log("当前时间：", timeNow, "上次时间：", userLastChatTime[FromUserName])
+    if (
+      userLastChatTime[FromUserName] &&
+      timeNow - userLastChatTime[FromUserName] >= 300
+    ) {
+      userChatHistory[FromUserName] = [];
+    }
+    userLastChatTime[FromUserName] = timeNow;
+    if (!userChatHistory[FromUserName]) {
+      userChatHistory[FromUserName] = [];
+    }
+    userChatHistory[FromUserName].push({ Role: 'user', Content });
+    console.log("会话历史：", userChatHistory);
+    const data = genParams(userChatHistory[FromUserName]);
+
+    const connect = await getConnect();
+    connect.send(JSON.stringify(data));
+
+    let answer = '';
+    let timeout;
+    const done = new Promise((resolve) => {
+      connect.on('message', (msg) => {
+        const data = JSON.parse(msg);
+        const payload = data.payload;
+        const choices = payload.choices;
+        const header = data.header;
+        const code = header.code;
+
+        if (code !== 0) {
+          console.log(payload);
+          return;
+        }
+
+        const status = choices.status;
+        const text = choices.text;
+        const content = text[0].content;
+        if (status !== 2) {
+          answer += content;
+        } else {
+          answer += content;
+          console.log('收到最终结果：', answer);
+          const usage = payload.usage;
+          const temp = usage.text;
+          const totalTokens = temp.total_tokens;
+          console.log('total_tokens:', totalTokens);
+          userHasAnswerIng[FromUserName] = false;
+          userChatHistory[FromUserName].push({
+            Role: 'assistant',
+            Content: answer,
+          });
+          const timeNow2 = Math.floor(Date.now() / 1000);
+          if (timeNow2 - timeNow > 3) {
+            userStashMsg[FromUserName] = answer;
+          }
+          clearTimeout(timeout);
+          resolve();
+        }
+      });
+    });
+
+    const timeoutPromise = new Promise((resolve) => {
+      timeout = setTimeout(() => {
+        userHasAnswerIng[FromUserName] = true;
+        console.log('执行超过3s，提前返回');
+        resolve(
+          formatReply(
+            FromUserName,
+            ToUserName,
+            timeNow,
+            '【正在思考中，回复任意文字尝试获取回复】'
+          )
+        );
+      }, 3000);
+    });
+
+    const result = await Promise.race([done, timeoutPromise]);
+    if (result) {
+      response.status(200).send(result);
+      return;
+    }
+    response.status(200).send(formatReply(FromUserName, ToUserName, timeNow, answer));
+    return
   }
-  response.status(200).send(formatReply(FromUserName, ToUserName, timeNow, answer));
-  return
-}};
+};
 
 function formatReply(ToUserName, FromUserName, CreateTime, Content) {
   return `<xml>
