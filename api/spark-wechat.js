@@ -254,7 +254,7 @@ module.exports = async function (request, response) {
   }
   response.status(200).send(formatReply(FromUserName, ToUserName, timeNow, answer));
   return
-};
+}};
 
 function formatReply(ToUserName, FromUserName, CreateTime, Content) {
   return `<xml>
