@@ -84,9 +84,7 @@ const emojiObj = {
   "/:cake": "蛋糕",
   "/:li": "闪电劈你"
 };
-const keywordAutoReply = process.env.KEYWORD_REPLAY;
-console.log(keywordAutoReply);
-
+const keywordAutoReply = JSON.parse(process.env.KEYWORD_REPLAY);
 module.exports = async function (request, response) {
   const method = request.method;
   const timestamp = request.query.timestamp;
