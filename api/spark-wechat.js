@@ -84,6 +84,7 @@ const emojiObj = {
   "/:cake": "蛋糕",
   "/:li": "闪电劈你"
 };
+const keywordAutoReply  =  process.env.KEYWORD_REPLAY;
 
 module.exports = async function (request, response) {
   const method = request.method;
@@ -118,8 +119,18 @@ module.exports = async function (request, response) {
   if (MsgType === 'text') {
     Content = textMsg.xml.Content[0];
     if (Object.hasOwnProperty.call(emojiObj, Content)) {
+      //用户发送了微信自带表情
       Content = '我发送了表情：' + emojiObj[Content] + '，现在你要怎么做'
-    }
+    } else if (Object.hasOwnProperty.call(keywordAutoReply, Content)) {
+        //关键词自动回复
+        response.status(200).send(formatReply(
+          FromUserName,
+          ToUserName,
+          timeNow,
+          keywordAutoReply[Content]
+        ));
+        return;
+
   }
 
   const timeNow = Math.floor(Date.now() / 1000);
