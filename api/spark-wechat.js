@@ -125,6 +125,7 @@ module.exports = async function (request, response) {
       Content = '我发送了表情：' + emojiObj[Content] + '，现在你要怎么做'
     } else if (Object.hasOwnProperty.call(keywordAutoReply, Content)) {
       //关键词自动回复
+      console.log("出发关键词自动回复");
       response.status(200).send(formatReply(
         FromUserName,
         ToUserName,
