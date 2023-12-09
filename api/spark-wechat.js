@@ -126,7 +126,7 @@ module.exports = async function (request, response) {
       //用户发送了微信自带表情
       Content = '我发送了表情：' + emojiObj[Content] + '，现在你要怎么做'
     }
-    console.log("关键词配置：",keywordAutoReply,"文本内容："+Content,"匹配结果：",Object.hasOwnProperty.call(keywordAutoReply, Content))
+    console.log("关键词配置：", keywordAutoReply, "文本内容：" + Content, "匹配结果：", Object.hasOwnProperty.call(keywordAutoReply, Content));
     if (Object.hasOwnProperty.call(keywordAutoReply, Content)) {
       //关键词自动回复
       console.log("触发关键词自动回复");
