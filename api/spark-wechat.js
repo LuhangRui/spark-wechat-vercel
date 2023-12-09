@@ -116,7 +116,7 @@ module.exports = async function (request, response) {
   const FromUserName = textMsg.xml.FromUserName[0];
   const CreateTime = textMsg.xml.CreateTime[0];
   const MsgType = textMsg.xml.MsgType[0];
-  console.log("收到消息类型："+MsgType);
+  console.log("收到消息类型：" + MsgType);
   let Content;
   const timeNow = Math.floor(Date.now() / 1000);
   if (MsgType === 'text') {
@@ -125,7 +125,8 @@ module.exports = async function (request, response) {
     if (Object.hasOwnProperty.call(emojiObj, Content)) {
       //用户发送了微信自带表情
       Content = '我发送了表情：' + emojiObj[Content] + '，现在你要怎么做'
-    } else if (Object.hasOwnProperty.call(keywordAutoReply, Content)) {
+    }
+    if (Object.hasOwnProperty.call(keywordAutoReply, Content)) {
       //关键词自动回复
       console.log("触发关键词自动回复");
       response.status(200).send(formatReply(
