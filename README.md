@@ -31,3 +31,39 @@ SUBSCRIBE_REPLY=欢迎关注，我已经接入了星火认知大模型。快来�
 填完之后点击`Deploy`，等待部署完成后，点击`settings`找到`Domain`，把你的域名填上去就好了，会自动加https
 
 5. 这个时候回到微信后台，可以点击提交了，不出意外的话，会提示`token验证成功`，到外边，启用服务器配置。ok，大功告成。现在你有一个接入星火认知大模型的微信公众号聊天机器人了。
+
+### QA
+
+#### 部署成功的特征是什么？
+
+答：访问路径`https://你的域名/api/qw-wechat`，页面输出`failed`，即为部署成功，可以去微信公众平台提交开发配置，验证`token`。
+
+#### 公众号验证token成功，但是发送消息没反应啊？
+
+答：检查微信公众平台开发配置有没有启用。`Vercel`环境变量是否正确，务必注意环境变量的大小写情况以及命名方式是蛇形，不是驼峰，建议直接复制。
+![image](https://github.com/SuxueCode/WechatBakTool/assets/30895030/d9312742-51ed-408a-a98e-f1ce776f7664)
+
+```
+HOST_URL
+SPARK_DOMAIN
+APPID
+API_SECRET
+API_KEY
+WX_TOKEN
+KEYWORD_REPLAY
+SUBSCRIBE_REPLY
+```
+#### 能不能接入其他大模型啊？
+
+答：不一定有精力，后续看一下。一般来说，不能白嫖的是不接入的。目前支持的有：
+
+[星火认知大模型](https://github.com/LuhangRui/spark-wechat-vercel)
+
+[通义千问大模型](https://github.com/LuhangRui/qw-wechat-vercel)
+
+
+#### 有没有作者联系方式，有问题需要咨询？
+
+答：关注我的微信公众号，然后你自然就会知道怎么找到我。
+
+![image](https://github.com/SuxueCode/WechatBakTool/assets/30895030/0a508949-ca25-4394-9d51-062c5334d020)
