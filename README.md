@@ -10,7 +10,7 @@
 ### 流程
 
 1. 注册星火认知大模型，创建一个应用，获得`APPID`,`API_SECRET`,`API_KEY`,领取400w token 的额度。
-2. 去阿里云购买个你喜欢的域名，最便宜的那种就行。买完增加`cname`解析到`cname.vercel-dns.com`
+2. 去阿里云购买个你喜欢的域名，最便宜的那种就行。买完增加`cname`解析到`cname-china.vercel-dns.com`
 3. 注册微信公众号，个人订阅号就行。后台管理页面上找到`设置与开发`-`基本配置`-`服务器配置`，修改服务器地址url为`https://你的域名/api/spark-wechat`，`TOKEN`是自定义的，随便编一个。`EncodingAESKey`随机生成(~~反正我们不用这一项~~)，我们选明文模式就好了。先不要提交，提交会校验TOKEN，所以等下一步我们部署好了再进行操作。
 4. fork本项目到你自己的仓库，访问[【Vercel】](https://vercel.com/)使用github账号登录就好了。然后新建项目，选择`Import Git Repository`从github仓库导入。在`Environment Variables`选项卡，增加环境变量。把下面的变量一项一项的加进去：
 ```
