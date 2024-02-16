@@ -117,6 +117,16 @@ module.exports = async function (request, response) {
   console.log("收到消息类型：" + MsgType);
   let Content;
   const timeNow = Math.floor(Date.now() / 1000);
+  if (MsgType === 'voice') {
+    console.log("暂不支持语音类型消息");
+    response.status(200).send(formatReply(
+      FromUserName,
+      ToUserName,
+      timeNow,
+      "暂不支持语音类型消息"
+    ));
+    return;
+  }
   if (MsgType === 'text') {
     Content = textMsg.xml.Content[0];
     console.log("收到文本消息：" + Content)
