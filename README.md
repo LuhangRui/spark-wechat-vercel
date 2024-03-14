@@ -17,6 +17,7 @@
 #这是v3版本星火大模型的请求地址，如果请求v2,v1.5修改HOST_URL、SPARK_DOMAIN这两项即可
 #v1.5 地址：ws(s)://spark-api.xf-yun.com/v1.1/chat DOMAIN:general
 #V2 地址：ws(s)://spark-api.xf-yun.com/v2.1/chat DOMAIN:generalv2
+#v3.5 地址：wss://spark-api.xf-yun.com/v3.5/chat DOMAIN：generalv3
 HOST_URL=wss://spark-api.xf-yun.com/v3.1/chat
 SPARK_DOMAIN=generalv3
 APPID=星火appid
