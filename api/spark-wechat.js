@@ -84,7 +84,7 @@ const emojiObj = {
   "/:cake": "蛋糕",
   "/:li": "闪电劈你"
 };
-const keywordAutoReply = JSON.parse(process.env.KEYWORD_REPLAY);
+const keywordAutoReply = parseAndAssign(process.env.KEYWORD_REPLAY)
 module.exports = async function (request, response) {
   const method = request.method;
   const timestamp = request.query.timestamp;
@@ -335,4 +335,14 @@ function hmacWithShaTobase64(algorithm, data, key) {
   hmac.update(data);
   const encodeData = hmac.digest();
   return Buffer.from(encodeData).toString('base64');
+}
+function parseAndAssign(jsonString) {
+  const parsedObject = JSON.parse(jsonString);
+  const keys = Object.keys(parsedObject)[0].split(',');
+  const value = parsedObject[Object.keys(parsedObject)[0]];
+  const resultObject = {};
+  keys.forEach(key => {
+      resultObject[key] = value;
+  });
+  return resultObject;
 }

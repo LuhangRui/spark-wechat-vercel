@@ -41,12 +41,14 @@ SUBSCRIBE_REPLY=欢迎关注，我已经接入了星火认知大模型。快来�
 
 #### 部署成功的特征是什么？
 
-答：访问路径`https://你的域名/api/qw-wechat`，页面输出`failed`，即为部署成功，可以去微信公众平台提交开发配置，验证`token`。
+答：访问路径`https://你的域名/api/spark-wechat`，页面输出`failed`，即为部署成功，可以去微信公众平台提交开发配置，验证`token`。
 
 #### 公众号验证token成功，但是发送消息没反应啊？
 
 答：检查微信公众平台开发配置有没有启用。`Vercel`环境变量是否正确，务必注意环境变量的大小写情况以及命名方式是蛇形，不是驼峰，建议直接复制。
 ![image](https://github.com/SuxueCode/WechatBakTool/assets/30895030/d9312742-51ed-408a-a98e-f1ce776f7664)
+
+ps: 忽略图中是qw-wechat,截图来自另一个项目
 
 ```
 HOST_URL
