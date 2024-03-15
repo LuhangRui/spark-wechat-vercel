@@ -25,7 +25,7 @@ API_SECRET=星火appsecret
 API_KEY=星火apikey
 WX_TOKEN=微信公众号TOKEN
 #这一项是关键词自动回复，是个json串，用于对特定关键词回复不同内容
-KEYWORD_REPLAY={"聊天记录":"https://www.alipan.com/s/XRqvCx7Sur7 点击链接保存，或者复制本段内容，打开「阿里云盘」APP"}
+KEYWORD_REPLAY={"关键词1":"单关键词回复","关键词2,关键词3":"关键词2和关键词3都会触发此回复"}
 #此项为关注后的自动回复配置
 SUBSCRIBE_REPLY=欢迎关注，我已经接入了星火认知大模型。快来和我对话吧。
 ```
