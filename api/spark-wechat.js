@@ -338,11 +338,11 @@ function hmacWithShaTobase64(algorithm, data, key) {
 }
 function parseAndAssign(jsonString) {
   const parsedObject = JSON.parse(jsonString);
-  const keys = Object.keys(parsedObject)[0].split(',');
-  const value = parsedObject[Object.keys(parsedObject)[0]];
   const resultObject = {};
-  keys.forEach(key => {
-      resultObject[key] = value;
+  Object.entries(parsedObject).forEach(([compoundKey, value]) => {
+      compoundKey.split(',').forEach(key => {
+          resultObject[key.trim()] = value;
+      });
   });
   return resultObject;
 }
